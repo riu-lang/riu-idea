@@ -1,0 +1,45 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>org.riu.lang</id>
+
+    <name>Riu Language</name>
+
+    <vendor url="https://github.com/riu-lang/riu">riu-lang</vendor>
+
+    <description><![CDATA[
+        IntelliJ IDEA support for the <b>riu</b> programming language:
+        diagnostics, completion, navigation and hover backed by the
+        official <code>riu-lsp</code> server.
+        ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.redhat.devtools.lsp4ij</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="Riu File"
+                  language="riu"
+                  extensions="ut"
+                  implementationClass="org.riu.lang.ide.RiuFileType"
+                  fieldName="INSTANCE"/>
+        <lang.parserDefinition language="riu"
+                               implementationClass="org.riu.lang.ide.parser.RiuParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="riu"
+                                       implementationClass="org.riu.lang.ide.highlighter.RiuSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="org.riu.lang.ide.highlighter.RiuColorSettingsPage"/>
+        <langCodeStyleSettingsProvider
+                implementation="org.riu.lang.ide.formatter.RiuLanguageCodeStyleSettingsProvider"/>
+        <projectConfigurable parentId="language"
+                             id="org.riu.lang.ide.settings.RiuConfigurable"
+                             displayName="Riu"
+                             instance="org.riu.lang.ide.settings.RiuConfigurable"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+        <server id="riuLanguageServer"
+                name="Riu Language Server"
+                factoryClass="org.riu.lang.ide.lsp.RiuLanguageServerFactory"/>
+        <languageMapping language="riu"
+                         serverId="riuLanguageServer"/>
+    </extensions>
+
+</idea-plugin>

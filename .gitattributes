@@ -1,0 +1,14 @@
+# 默认所有文本文件使用 LF 换行
+* text=auto eol=lf
+
+# Windows 批处理脚本保留 CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# 二进制文件
+*.jar binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.zip binary
