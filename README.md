@@ -1,7 +1,7 @@
 # Riu Language — IntelliJ Plugin
 
 IntelliJ IDEA / JetBrains 系 IDE 的 [riu](https://github.com/riu-lang/riu) 语言支持插件。
-通过 [LSP4IJ](https://github.com/redhat-developer/lsp4ij) 接入官方 `riu-lsp` 服务，
+通过 IntelliJ Platform 内置 LSP API 接入官方 `riu-lsp` 服务，
 提供诊断、补全、跳转、悬浮提示等能力，并附带原生的语法高亮与代码风格配置。
 
 ## 功能
@@ -9,7 +9,7 @@ IntelliJ IDEA / JetBrains 系 IDE 的 [riu](https://github.com/riu-lang/riu) 语
 - `.ut` 文件类型识别与图标
 - 语法高亮（关键字 / 字符串 / 数字 / 注释 / 运算符等），并提供 *Settings → Editor → Color Scheme → Riu* 配色页
 - 代码风格设置（缩进、空格等），位于 *Settings → Editor → Code Style → Riu*
-- 通过 LSP4IJ 启动外部 `riu-lsp` 进程，提供：
+- 通过平台 LSP 集成启动外部 `riu-lsp` 进程，提供：
   - 诊断（错误/警告下划线）
   - 代码补全
   - 定义跳转、引用查找
@@ -18,8 +18,8 @@ IntelliJ IDEA / JetBrains 系 IDE 的 [riu](https://github.com/riu-lang/riu) 语
 
 ## 依赖
 
-- IntelliJ Platform 兼容版本见 [`build.gradle.kts`](build.gradle.kts) 与 [`gradle.properties`](gradle.properties)
-- 必装插件：[LSP4IJ](https://plugins.jetbrains.com/plugin/23257-lsp4ij)
+- IntelliJ IDEA **2025.2+**（Ultimate 系 IDE，含 WebStorm / PyCharm 等；不支持 Community Edition）
+- 兼容版本见 [`gradle.properties`](gradle.properties) 中的 `platformVersion` / `pluginSinceBuild`
 - 可执行的 `riu-lsp` 语言服务（与 `riu` 编译器同 `bin/` 目录分发）
 
 ## 配置
@@ -87,7 +87,7 @@ riu-idea/
     │   ├── psi/
     │   ├── highlighter/             语法高亮 + 配色页
     │   ├── formatter/               Code Style 设置
-    │   ├── lsp/                     LSP4IJ 接入（server / client / semantic tokens）
+    │   ├── lsp/                     平台 LSP 接入（server descriptor / semantic tokens）
     │   └── settings/                项目级持久化设置
     └── resources/META-INF/plugin.xml
 ```

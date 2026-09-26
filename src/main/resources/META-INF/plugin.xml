@@ -13,7 +13,8 @@
         ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.redhat.devtools.lsp4ij</depends>
+    <depends>com.intellij.modules.ultimate</depends>
+    <depends>com.intellij.modules.lsp</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Riu File"
@@ -32,14 +33,8 @@
                              id="org.riu.lang.ide.settings.RiuConfigurable"
                              displayName="Riu"
                              instance="org.riu.lang.ide.settings.RiuConfigurable"/>
-    </extensions>
-
-    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
-        <server id="riuLanguageServer"
-                name="Riu Language Server"
-                factoryClass="org.riu.lang.ide.lsp.RiuLanguageServerFactory"/>
-        <languageMapping language="riu"
-                         serverId="riuLanguageServer"/>
+        <platform.lsp.serverSupportProvider
+                implementation="org.riu.lang.ide.lsp.RiuLspServerSupportProvider"/>
     </extensions>
 
 </idea-plugin>

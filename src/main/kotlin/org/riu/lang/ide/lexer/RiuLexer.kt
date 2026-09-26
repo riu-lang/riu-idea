@@ -16,16 +16,18 @@ class RiuLexer : LexerBase() {
     private var tokenStart: Int = 0
     private var tokenEnd: Int = 0
     private var tokenType: IElementType? = null
+    private var afterHash: Boolean = false
 
     override fun start(buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int) {
         this.buffer = buffer
         this.endOffset = endOffset
         this.tokenStart = startOffset
         this.tokenEnd = startOffset
+        afterHash = initialState != 0
         advance()
     }
 
-    override fun getState(): Int = 0
+    override fun getState(): Int = if (afterHash) 1 else 0
     override fun getTokenType(): IElementType? = tokenType
     override fun getTokenStart(): Int = tokenStart
     override fun getTokenEnd(): Int = tokenEnd
@@ -40,6 +42,18 @@ class RiuLexer : LexerBase() {
         }
 
         val c = buffer[tokenStart]
+
+        // #Name 注解：'#' 与 Name 分词，与 rd / riu-lsp semantic tokens 对齐
+        if (afterHash) {
+            afterHash = false
+            if (isIdStart(c)) {
+                var i = tokenStart + 1
+                while (i < endOffset && isIdPart(buffer[i])) i++
+                tokenEnd = i
+                tokenType = RiuTokenTypes.METADATA
+                return
+            }
+        }
 
         // 空白（含换行）
         if (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
@@ -102,12 +116,13 @@ class RiuLexer : LexerBase() {
             return
         }
 
-        // 构建注解 #Name
-        if (c == '#' && tokenStart + 1 < endOffset && isIdStart(buffer[tokenStart + 1])) {
-            var i = tokenStart + 2
-            while (i < endOffset && isIdPart(buffer[i])) i++
-            tokenEnd = i
+        // 构建注解 '#'
+        if (c == '#') {
+            tokenEnd = tokenStart + 1
             tokenType = RiuTokenTypes.METADATA
+            if (tokenEnd < endOffset && isIdStart(buffer[tokenEnd])) {
+                afterHash = true
+            }
             return
         }
 

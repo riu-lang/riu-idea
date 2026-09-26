@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "org.riu"
-version = "0.5.1-SNAPSHOT"
+version = "0.6.1-SNAPSHOT"
 
 // Set the JVM language level used to build the project.
 kotlin {
@@ -24,8 +24,6 @@ dependencies {
     intellijPlatform {
         intellijIdea(providers.gradleProperty("platformVersion"))
         testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
-
-        plugin("com.redhat.devtools.lsp4ij", libs.versions.lsp4ij.get())
     }
 }
 
@@ -36,11 +34,11 @@ intellijPlatform {
         }
 
         changeNotes = """
-            <h2>riu-lang IntelliJ 插件</h2>
+            <h2>0.6.0</h2>
             <ul>
-                <li>通过 LSP4IJ 接入 riu-lsp，提供语法高亮</li>
-                <li>支持 .ut 文件类型识别</li>
-                <li>提供代码配色和代码风格支持</li>
+                <li>修复平台 LSP 未启动：显式绑定项目根目录并声明 ultimate/lsp 模块依赖</li>
+                <li>为 riu 语言启用 semantic tokens（平台默认跳过自定义 Language）</li>
+                <li>通过 riu-lsp 提供诊断、补全、跳转、悬浮提示与语义高亮</li>
             </ul>
         """.trimIndent()
     }
